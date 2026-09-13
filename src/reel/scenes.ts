@@ -92,12 +92,30 @@ export const SCENES: Scene[] = [
   },
 ];
 
-export const SCENE_STARTS: number[] = (() => {
+export function sceneTimings(scenes: Scene[]) {
   const starts: number[] = [];
   let acc = 0;
-  for (const s of SCENES) {
+  for (const s of scenes) {
     starts.push(acc);
     acc += s.hold;
   }
-  return starts;
-})();
+  return { starts, loopMs: Math.max(acc + 400, 1), pictureEnd: acc };
+}
+
+export const SCENE_STARTS: number[] = sceneTimings(SCENES).starts;
+
+export function scenesFromSrcs(srcs: string[]): Scene[] {
+  const hold = 900;
+  return srcs.map((src, i) => {
+    const t = SCENES[i % SCENES.length];
+    return {
+      id: `frame-${i}`,
+      src,
+      hold,
+      from: t.from,
+      to: t.to,
+      grade: t.grade,
+      flicker: t.flicker,
+    };
+  });
+}

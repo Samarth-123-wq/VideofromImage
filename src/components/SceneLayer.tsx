@@ -33,6 +33,8 @@ export default function SceneLayer({
       <img
         src={scene.src}
         alt=""
+        crossOrigin="anonymous"
+        referrerPolicy="no-referrer"
         draggable={false}
         className="absolute inset-0 h-full w-full object-cover"
         style={{
